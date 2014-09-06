@@ -1,0 +1,13 @@
+$('body').append("<%= escape_javascript render partial: 'form_modal', locals: { story: @story, page: Page.new } %>");
+$pageModal = $('#pageModal');
+
+initializeSummernote($pageModal.find('textarea'));
+$pageModal.find('#actually-submit-page-form').click(function () {
+  $pageModal.find('form').submit();
+  return false;
+});
+
+$pageModal.modal('show');
+$pageModal.on('hidden.bs.modal', function () {
+  $pageModal.remove();
+});

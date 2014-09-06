@@ -1,0 +1,101 @@
+<div class="page-header">
+  <h1 class="content-title">
+    <%=t '.title', :default => @story.name %>
+    <%= link_to '(new page)', new_story_page_path(@story), remote: true if admin_signed_in? %>
+  </h1>
+
+  <% if admin_signed_in? %>
+    <div class="content-box content-audio">
+      Insert audio here? (unimplemented)
+    </div>
+  <% end %>
+  <div class="clearfix"></div>
+</div>
+
+<div class="row">
+  <div class="col-lg-1"></div>
+
+  <div class="col-lg-8 content-box content-left">
+    <div class="row">
+      <div class="col-sm-11">
+
+        <% if admin_signed_in? %>
+          <% if @page.published? %>
+
+            <%= form_for @page do |f| %>
+              <%= f.hidden_field :published, value: 0 %>
+              <span class='text-okay'>
+                This page is visible to the public.
+                <%= link_to 'Unpublish it', '/', onclick: '$(this).closest("form").submit();' %>.
+              </span>
+            <% end %>
+
+          <% else %>
+
+            <%= form_for @page do |f| %>
+              <%= f.hidden_field :published, value: 1 %>
+              <span class='text-error'>
+                This page is not currently published.
+                <%= link_to 'Publish it', '/', onclick: '$(this).closest("form").submit();' %>.
+              </span>
+            <% end %>
+          
+          <% end %>
+        <% end %>
+
+        <div id="page-content">
+          <%= @page.content.html_safe %>
+        </div>
+
+      </div>
+      <div class="col-sm-1">
+        <span class="page-number"><%= @page.number %></span> <%= link_to '(edit)', edit_page_path(@page), remote: true, id: 'edit-page-button' if admin_signed_in? %>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= render partial: 'page_arrow', locals: { direction: 'left', page: @page.previous(!admin_signed_in?) } %>
+      
+      <%= render partial: 'page_arrow', locals: { direction: 'right', page: @page.next(!admin_signed_in?) } %>
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
+
+<% if admin_signed_in? || @blog_post_ready %>
+
+  <div id="inspiration" class="row content-box">
+    <div class="row">
+      <div class="col-sm-11" align="center">
+        <h2>
+          <a class="additional-icon" href="#inspiration-box" data-toggle="collapse" data-parent="#inspiration">
+            Inspiration
+            <%= "(untouched)" if admin_signed_in? && !@blog_post_ready %>
+            <i class="fa fa-chevron-down"></i>
+          </a>
+          <!-- TODO Edit button for admin + generate blog post for posts on-create. -->
+        </h2>
+      </div>
+      <div class="col-sm-1">
+        
+      </div>
+    </div>
+
+    <div id="inspiration-box" class="row collapse">
+      <div class="col-sm-12">
+
+        <% if admin_signed_in? %>
+          <span id='edit-inspiration-stuff'>
+            <%= link_to '(edit)', edit_blog_post_path(@page.blog_post), remote: true, method: :get %>
+            <br />
+          </span>
+        <% end %>
+
+        <div id='inspiration-content'>
+          <%= @page.blog_post.try(:content).try(:html_safe) %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

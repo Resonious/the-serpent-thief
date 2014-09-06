@@ -1,0 +1,4 @@
+$('#edit-page-button').show()
+$('#page-content').html("<%=j @page.content.html_safe %>");
+
+$(window).off('beforeunload.page');

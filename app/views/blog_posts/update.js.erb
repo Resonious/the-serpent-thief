@@ -1,0 +1,4 @@
+$('#edit-inspiration-stuff').show()
+$('#inspiration-content').html("<%=j @blog_post.content.html_safe %>");
+
+$(window).off('beforeunload.blog_post');

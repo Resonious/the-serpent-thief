@@ -1,0 +1,4 @@
+<div class="page-header">
+  <h1>Blog post entry for <%= @blog_post.page.story %> page <%= @blog_post.page.number %></h1>
+</div>
+<%= render partial: 'form', locals: { blog_post: @blog_post } %>

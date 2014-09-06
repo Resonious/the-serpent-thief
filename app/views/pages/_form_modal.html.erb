@@ -1,0 +1,19 @@
+<div class="modal fade" id="pageModal" tabindex="-1" role="dialog" aria-labelledby="pageModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title modal-page-area" id="pageTitle">
+          Creating page <%= @story.pages.count + 1 %> of <%= @story.name %>
+        </h4>
+      </div>
+      <div class="modal-body modal-content-area" id="pageBody">
+        <%= render partial: 'form', locals: { page: @page, no_submit: true, no_cancel: true } %>
+      </div>
+      <div class="modal-footer modal-content-area" id="pageFooter">
+        <%= link_to 'Cancel', '/', id: 'cancel-page-form', class: 'btn btn-default', 'data-dismiss' => 'modal' %>
+        <%= link_to 'Submit', '/', id: 'actually-submit-page-form', class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+</div>

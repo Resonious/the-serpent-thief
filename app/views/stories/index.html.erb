@@ -1,0 +1,29 @@
+<div class="page-header row">
+  <div class="col-sm-2">
+    <h1><%=t '.title', :default => Story.model_name.human.pluralize.titleize %></h1>
+  </div>
+  <div class="col-sm-1">
+    <% if @current_admin %>
+      <%= link_to "New story", new_story_path, class: 'btn btn-default' %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-7">
+    <ul>
+      <% @stories.each do |story| %>
+        <li>
+        <% if (admin_signed_in? ? story.pages : story.published_pages).any? %>
+          <%= link_to story.name, read_story_path(story.link) %>
+        <% else %>
+          <%= story.name %>
+        <% end %>
+        <% if @current_admin %>
+          <i class="fa fa-gear"></i> <%= link_to "Manage", edit_story_path(story) %>
+        <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

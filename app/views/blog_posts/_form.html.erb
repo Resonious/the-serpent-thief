@@ -1,0 +1,11 @@
+<%= form_for blog_post, remote: local_assigns[:remote], builder: BootstrapFormBuilder do |f| %>
+  <div class='form-group controls'>
+    <%= f.error_for :content %>
+    <%= f.text_area :content, class: 'summernote' %>
+  </div>
+
+  <% unless local_assigns[:no_cancel] %>
+    <%= link_to 'Cancel', page_path(blog_post.page), id: 'cancel-page-form', class: 'btn btn-default' %>
+  <% end %>
+  <%= f.submit unless local_assigns[:no_submit] %>
+<% end %>

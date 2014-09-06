@@ -1,0 +1,9 @@
+$('#edit-inspiration-stuff').hide();
+
+var $inspirationContent = $('#inspiration-content');
+// oldHtml = $inspirationContent.html();
+$inspirationContent.html("<%=j render partial: 'form', locals: { blog_post: @blog_post, remote: true } %>");
+
+initializeSummernote("#blog_post_content");
+
+$(window).on('beforeunload.blog_post', unsavedChangesToBlogPost);

@@ -1,0 +1,7 @@
+<div class="<%= direction %>-arrow">
+  <% if local_assigns[:page] %>
+    <%= link_to read_story_page_path(page.story.link, page.number) do %>
+      <i class="fa fa-arrow-<%= direction %> fa-5x page-arrow"></i>
+    <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,4 @@
+<div class="page-header">
+  <h1>Page <%= @page.number %> of <%= @page.story.name %></h1>
+</div>
+<%= render partial: 'form', locals: { page: @page } %>
