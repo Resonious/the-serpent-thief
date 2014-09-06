@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :admins, skip: 'registration'
+  devise_for :admins, controllers: { registrations: 'admins/registrations' }
   get "/admin", to: redirect("/admins/sign_in")
+  get '/admins/sign_up', to: redirect('/')
   resources :stories do
     resources :pages, shallow: true
   end

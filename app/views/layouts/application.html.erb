@@ -54,7 +54,8 @@
           <% if @current_admin %>
             <ul class="nav navbar-nav" style="float: right;">
               You are logged in as <%= @current_admin.email %>. <br />
-              <%= link_to "Sign out", destroy_admin_session_path, method: 'DELETE' %>
+              <%= link_to "Sign out", destroy_admin_session_path, method: 'DELETE' %> -
+              <%= link_to "Account", edit_admin_registration_path %>
             </ul>
             <div class="clearfix"></div>
           <% end %>
