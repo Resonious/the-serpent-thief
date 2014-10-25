@@ -44,7 +44,10 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="<%= stories_path %>"><%= ENV['SITE_NAME'] or 'PLZ SET SITE_NAME' %></a>
+        <span class="navbar-brand" href="<%= stories_path %>">
+          <%= image_tag "the-serpent-thief.png", class: 'navbar-brand', style: 'width: 1274.28px; height: 352.19px; z-index: -111!important;' %>
+          <%= ENV['SITE_NAME'] or 'PLZ SET SITE_NAME' %>
+        </span>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
             <%= Story.find_each do |story| %>
