@@ -1,9 +1,22 @@
 body {
-  background-color: #FABD86;
+  background-color: #FCEBD1;
+  background-image: url('bg-tile.png');
+}
+
+a:link:not(.btn) {
+  color: #B03600;
+}
+
+a:visited:not(.btn) {
+  color: #FF2F00;
+}
+
+footer p {
+  color: #808080;
 }
 
 .navbar-static-top {
-  background-color: #E9651B;
+  background-color: #FCEBD1;
   border-color: #772519;
 }
 
@@ -26,8 +39,8 @@ body {
 }
 
 .content-box {
-  background-color: #EDC071;
-  border-radius: 5px;
+  background-color: #FABD86;
+  /*border-radius: 5px;*/
 
   border: 2px solid #772519;
 
@@ -70,14 +83,6 @@ body {
 .text-okay {
   color: #24773A;
   font-weight: bold;
-}
-
-a:link:not(.btn) {
-  color: #B03600;
-}
-
-a:visited:not(.btn) {
-  color: #FF2F00;
 }
 
 #inspiration-content,#page-content {

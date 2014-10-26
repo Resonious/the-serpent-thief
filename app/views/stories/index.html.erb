@@ -12,7 +12,7 @@
 <div class="row">
   <div class="col-sm-7">
     <ul>
-      <% @stories.each do |story| %>
+      <% @stories.find_each do |story| %>
         <li>
         <% if (admin_signed_in? ? story.pages : story.published_pages).any? %>
           <%= link_to story.name, read_story_path(story.link) %>

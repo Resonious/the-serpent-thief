@@ -13,6 +13,12 @@ class Story < ActiveRecord::Base
     find_by active: true
   end
 
+  def self.with_pages
+    joins(:pages)
+      .where(pages: { published: true })
+      .uniq
+  end
+
   def first_page
     pages.where(number: 1).first or raise "#{name} has no first page!"
   end

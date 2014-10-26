@@ -2,6 +2,10 @@ class StoriesController < InheritedResources::Base
   before_filter :permitted_params
   before_filter :authenticate_admin!, except: [:show, :read, :index]
 
+  def index
+    @stories = admin_signed_in? ? Story.all : Story.with_pages
+  end
+
   def show
     super do |format|
       format.html do

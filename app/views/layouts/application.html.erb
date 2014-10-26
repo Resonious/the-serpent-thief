@@ -48,11 +48,11 @@
           <%= ENV['SITE_NAME'] or 'PLZ SET SITE_NAME' %>
         </a> -->
         <a href="<%= stories_path %>">
-          <%= image_tag "the-serpent-thief.png", class: 'navbar-brand', style: 'width: 637.14px; height: 176.095px; z-index: -111!important;' %>
+          <%= image_tag "the-serpent-thief.png", class: 'navbar-brand', style: 'width: 637.14px; height: 176.095px; z-index: -111!important;', alt: (ENV['SITE_NAME'] or 'PLZ SET SITE_NAME') %>
         </a>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
-            <%= Story.find_each do |story| %>
+            <%= (admin_signed_in? ? Story : Story.with_pages).find_each do |story| %>
               <li class='story-link'><%= link_to story.name, read_story_path(story.link) %></li>
             <% end %>
           </ul>
@@ -73,7 +73,7 @@
       <%= yield %>
       
       <footer>
-        <!-- <p>&copy; Company 2014</p> -->
+        <p>Banner by <%= link_to 'casebook art', 'http://thecasebookof.tumblr.com/' %></p>
       </footer>
 
     </div> <!-- /container -->
