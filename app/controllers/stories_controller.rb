@@ -16,7 +16,9 @@ class StoriesController < InheritedResources::Base
 
   def read
     unless Story.any?
-      return render text: "There aren't even any stories! What?!", status: 404
+      text = "There aren't even any stories! What?!"
+      text += " <a href='#{new_story_path}'>Make one.</a>" if admin_signed_in?
+      return render inline: text, status: 404
     end
 
     if params[:story_link]
