@@ -1,8 +1,14 @@
 <div class="page-header">
   <% if !@story.published_pages.any? %>
-    <h1>Unfortunately, the story "<%= @story.name %>" has no pages right now.</h1>
+    <h1>
+      Unfortunately, the story "<%= @story.name %>" has no pages right now.
+      <% if admin_signed_in? %>
+        <%= link_to 'Add one!', new_story_page_path(@story), remote: true %>
+      <% end %>
+    </h1>
   <% else %>
     <h1>Sorry, there is currently no page <%= page_number %> for "<%= @story.name %>"</h1>
   <% end %>
+
   <%= link_to "Story list", stories_path %>
 </div>

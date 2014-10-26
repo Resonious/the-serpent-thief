@@ -44,18 +44,20 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <span class="navbar-brand" href="<%= stories_path %>">
-          <%= image_tag "the-serpent-thief.png", class: 'navbar-brand', style: 'width: 1274.28px; height: 352.19px; z-index: -111!important;' %>
+        <!-- <a class="navbar-brand" href="<%= stories_path %>">
           <%= ENV['SITE_NAME'] or 'PLZ SET SITE_NAME' %>
-        </span>
+        </a> -->
+        <a href="<%= stories_path %>">
+          <%= image_tag "the-serpent-thief.png", class: 'navbar-brand', style: 'width: 637.14px; height: 176.095px; z-index: -111!important;' %>
+        </a>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
             <%= Story.find_each do |story| %>
-              <li><%= link_to story.name, read_story_path(story.link) %></li>
+              <li class='story-link'><%= link_to story.name, read_story_path(story.link) %></li>
             <% end %>
           </ul>
           <% if @current_admin %>
-            <ul class="nav navbar-nav" style="float: right;">
+            <ul class="nav navbar-nav">
               You are logged in as <%= @current_admin.email %>. <br />
               <%= link_to "Sign out", destroy_admin_session_path, method: 'DELETE' %> -
               <%= link_to "Account", edit_admin_registration_path %>

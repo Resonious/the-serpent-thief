@@ -33,11 +33,11 @@ class StoriesController < InheritedResources::Base
       end
     end
 
-    @blog_post_ready = @page.blog_post && @page.blog_post.content && !@page.blog_post.content.empty?
 
     if @page.nil? || (!@page.published && !admin_signed_in?)
       render 'no_such_page', locals: { page_number: params[:page] }
     else
+      @blog_post_ready = @page.blog_post && @page.blog_post.content && !@page.blog_post.content.empty?
       cookies[:page_id] = @page.id
       render 'show'
     end
