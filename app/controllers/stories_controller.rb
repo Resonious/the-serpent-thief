@@ -76,7 +76,7 @@ class StoriesController < InheritedResources::Base
 
   def assign_tagged_page(tag, page_number)
     if @story.nil?
-      render text: '404', status: 500
+      render text: '404', status: 404
       return false
     end
 
