@@ -26,7 +26,7 @@
               <%= f.hidden_field :published, value: 0 %>
               <span class='text-okay'>
                 This page is visible to the public.
-                <%= link_to 'Unpublish it', '/', onclick: '$(this).closest("form").submit();' %>.
+                <%= link_to 'Unpublish it', '#', onclick: '$(this).closest("form").submit();' %>.
               </span>
             <% end %>
 
@@ -36,7 +36,7 @@
               <%= f.hidden_field :published, value: 1 %>
               <span class='text-error'>
                 This page is not currently published.
-                <%= link_to 'Publish it', '/', onclick: '$(this).closest("form").submit();' %>.
+                <%= link_to 'Publish it', '#', onclick: '$(this).closest("form").submit();' %>.
               </span>
             <% end %>
           

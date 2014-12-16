@@ -1,5 +1,6 @@
 class BlogPostsController < InheritedResources::Base
   respond_to :html, :js
+  before_filter :authenticate_admin!, except: [:show]
 
   def show
     super do |format|

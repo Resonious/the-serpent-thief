@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :stories do
     resources :pages, shallow: true
   end
+  resources :tags, only: [:index, :destroy]
   resources :blog_posts
   
   root to: 'stories#home'

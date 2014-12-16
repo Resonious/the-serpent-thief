@@ -8,7 +8,6 @@ function unsavedChangesToBlogPost() {
 function unsavedChangesToPage(condition) {
   return 'You have unsaved changes to the current page. Are you sure?';
 }
-var seriously;
 
 $(function() {
   if ($('#active-warning').length) {
@@ -27,7 +26,10 @@ $(function() {
     }
   }
 
-  $('.story-link.dropdown').mouseover(function() {
-    $(this).dropdown('toggle');
+  $('.tag-drop-hover').mouseover(function() {
+    var storyTags = $(this).next('.story-tags');
+    var dropdown = storyTags.find('.tags-dropdown');
+
+    dropdown.dropdown('toggle');
   });
 });

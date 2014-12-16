@@ -54,17 +54,36 @@
           <ul class="nav navbar-nav">
             <% (admin_signed_in? ? Story : Story.with_pages).find_each do |story| %>
 
-              <li class='story-link dropdown' data-toggle='dropdown'>
-                <%= link_to story.name, read_story_path(story.link) %>
-                <ul class='dropdown-menu' role='menu'>
+              <li>
+                <% has_tags = story.tags.any? %>
 
-                  <% story.tags.each do |tag| %>
-                    <li role='presentation'>
-                      <%= link_to tag.value, clean_page_path(story, 1, tag), role: 'menuitem' %>
-                    </li>
-                  <% end %>
+                <%= link_to story.name, read_story_path(story.link), class: 'story-link' + (' tag-drop-hover' if has_tags).to_s %>
 
-                </ul>
+                <% if has_tags %>
+                  <div class='story-tags dropdown'>
+                    <a href='#' class='tags-dropdown' data-toggle='dropdown'></a>
+                    <ul class='dropdown-menu' role='menu'>
+
+                      <% story.tags.each do |tag| %>
+                        <li role='presentation'>
+                          <% if admin_signed_in? %> <div> <% end %>
+
+                            <%= link_to tag.value, clean_page_path(story, 1, tag), role: 'menuitem' %>
+                            <% if admin_signed_in? %>
+                              <% session[:return_to] = request.original_url %>
+                              <%= link_to tag_path(tag), method: 'DELETE', style: 'float: right;', data: { confirm: "Destroy tag #{tag.value}? Pages will remain, but will no longer have this tag." } do %>
+                                <i class='fa fa-times'></i>
+                              <% end %>
+                            <% end %>
+
+                          <% if admin_signed_in? %> </div> <% end %>
+                        </li>
+                      <% end %>
+
+                    </ul>
+                  </div>
+                <% end %>
+
               </li>
 
             <% end %>
