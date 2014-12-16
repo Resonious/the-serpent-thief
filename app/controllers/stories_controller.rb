@@ -2,7 +2,7 @@ class StoriesController < InheritedResources::Base
   include StoriesHelper
 
   before_filter :permitted_params
-  before_filter :authenticate_admin!, except: [:show, :read, :index]
+  before_filter :authenticate_admin!, except: [:show, :read, :read_story_tag, :index]
 
   def index
     @stories = admin_signed_in? ? Story.all : Story.with_pages
