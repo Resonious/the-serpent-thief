@@ -1,6 +1,6 @@
 body {
   background-color: #FCEBD1;
-  background-image: url(image-path('bg-tile.png'));
+  background-image: asset-data-url('bg-tile.png');
 }
 
 a:link:not(.btn) {
