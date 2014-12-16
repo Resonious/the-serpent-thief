@@ -44,7 +44,7 @@ class StoriesController < InheritedResources::Base
     else
       @story = Story.active
 
-      return unless assign_tagged_page(tag, page_number)
+      return unless assign_tagged_page(story_or_tag, page_number)
     end
 
     render 'show'
@@ -60,6 +60,7 @@ class StoriesController < InheritedResources::Base
     page_number = params[:page]
     if page_number.nil?
       redirect_to read_story_tag_page_path(story, tag, 1)
+      return
     end
 
     @story = Story.find_by(link: story)
@@ -69,7 +70,14 @@ class StoriesController < InheritedResources::Base
     render 'show'
   end
 
+  private
+
   def assign_tagged_page(tag, page_number)
+    if @story.nil?
+      render text: '404', status: 404
+      return false
+    end
+
     if @story.pages.tag?(tag)
       @page = @story.pages.tagged_number(tag, page_number)
       @tag  = tag
@@ -117,8 +125,6 @@ class StoriesController < InheritedResources::Base
   #     render 'show'
   #   end
   # end
-
-  private
 
   def render_404(story, tag = nil)
     return render '404', status: 404, locals: {story: story, tag: tag}

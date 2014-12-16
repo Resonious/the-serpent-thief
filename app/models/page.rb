@@ -1,11 +1,11 @@
 class Page < ActiveRecord::Base
   belongs_to :story, inverse_of: :pages
   has_one :blog_post
+  has_and_belongs_to_many :tags
 
   validates_presence_of :content
   validates_presence_of :number, if: :story_id
   validates_uniqueness_of :number, scope: :story_id, if: :number
-  validate :tag_is_not_a_story_link
 
   before_validation :assure_page_number
   before_validation :assure_blog_post, on: :create
@@ -17,41 +17,54 @@ class Page < ActiveRecord::Base
   end
 
   def self.tagged(tag)
-    where(tag: tag)
+    if tag.is_a?(Tag)
+      joins(:tags).where(tags: { id: tag.id })
+    else
+      joins(:tags).where(tags: { value: tag })
+    end
   end
 
   def self.tag?(tag)
-    where(tag: tag).exists?
-  end
-
-  def self.tags
-    tags = []
-    tag  = ''
-    until tag.nil?
-      tags << tag unless tag.empty?
-      tag = where.not(tag: tags).first.try(:tag)
-    end
-    tags
+    tagged(tag).exists?
   end
 
   # NOTE This kind of assumes that it is being called scoped
   # to story already. i.e. @story.pages.tagged_number('tag', 1)
-  def self.tagged_number(tag, number, scope = true)
-    return nil unless tag?(tag)
-    number = number.to_i
-    prior  = offset_to_tag(tag)
+  def self.tagged_number(tag, tagged_number, scope = true)
+    tagged_number = tagged_number.to_i
+    return nil if tagged_number <= 0
 
-    # byebug
-    find_by(tag: tag, number: prior + number)
-      .tap { |s| s.scope_number_to_tag!(prior) if scope && s }
+    with_tag = tagged(tag)
+    return nil if tagged_number > with_tag.size
+
+    with_tag[tagged_number - 1]
+      .tap { |p| p.scope_number_to_tag!(tag, tagged_number) if scope && p }
   end
 
-  def self.offset_to_tag(tag)
-    first_page = where(tag: tag).first
+  def tags=(tag_list)
+    new_tags      = tag_list.downcase.split(',')
+    existing_tags = tags.map(&:value)
 
-    where(story_id: first_page.story_id)
-    .where('number < ?', first_page.number)
-    .size
+    # If thing out the new tag list to only include tags we don't
+    # already have. Additionally, remove any existing tags that
+    # aren't in the new list.
+    existing_tags.each do |existing_tag|
+      index = new_tags.index(existing_tag)
+      if index
+        new_tags.delete_at(index); next
+      end
+      tags.where(value: existing_tag).destroy_all
+    end
+
+    # Now, the remaining new tags should only include we don't
+    # already have.
+    new_tags.each do |tag_value|
+      tags << Tag.find_or_create_by(value: tag_value)
+    end
+  end
+
+  def tag_values
+    tags.map(&:value).join(',')
   end
 
   def next(published = true)
@@ -71,41 +84,38 @@ class Page < ActiveRecord::Base
   end
 
   def number(force = false)
-    num = self[:number]
-    return num if force || @tag_number_offset.nil?
-    num - @tag_number_offset
+    number_scoped_to_tag? && !force ? @augmented_number : self[:number]
   end
 
-  def scope_number_to_tag!(offset = nil)
-    @tag_number_offset = offset || Page.offset_to_tag(tag)
+  def scope_number_to_tag!(tag, augmented_number = nil)
+    raise 'find a way to get augmented number' if augmented_number.nil?
+    @current_tag = case tag
+                   when Tag then tag.value
+                   else tag
+                   end
+    @augmented_number = augmented_number
   end
 
   def number_scoped_to_tag?
-    !@tag_number_offset.nil?
+    !@current_tag.nil?
   end
 
   private
 
-  def tag_is_not_a_story_link
-    if Story.where(link: self.tag).exists?
-      errors.add(:tag, %(
-        cannot be the same as a story link.
-      ))
-    end
-  end
-
   def page_relative_to(dir, published = true)
-    number = self[:number]
-    # TODO You'll have to use where(number > mine).first / where(number < mine).last
-    # again in order to account for multiple, discontinuous tags.
-    # TODO also remember to make the tag class and join table and to index
-    # things :[
-    relation = Page.where(story_id: story_id, number: number.send(dir, 1))
-    relation = relation.where(published: true) if published
-    relation = relation.where(tag: tag)        if number_scoped_to_tag?
-    page = relation.first
+    next_number = number.send(dir, 1)
+
+    pages = Page.where(story_id: story_id)
+    pages = pages.where(published: true) if published
+    if number_scoped_to_tag?
+      pages = pages.tagged_number(@current_tag, next_number)
+    else
+      pages = pages.where(number: next_number)
+    end
+
+    page = pages.is_a?(Page) ? pages : pages.try(:first)
     if page && number_scoped_to_tag?
-      page.scope_number_to_tag!(@tag_number_offset)
+      page.scope_number_to_tag!(@current_tag, next_number)
     end
     page
   end

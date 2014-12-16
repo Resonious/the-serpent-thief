@@ -52,8 +52,21 @@
         </a>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
-            <%= (admin_signed_in? ? Story : Story.with_pages).find_each do |story| %>
-              <li class='story-link'><%= link_to story.name, read_story_path(story.link) %></li>
+            <% (admin_signed_in? ? Story : Story.with_pages).find_each do |story| %>
+
+              <li class='story-link dropdown' data-toggle='dropdown'>
+                <%= link_to story.name, read_story_path(story.link) %>
+                <ul class='dropdown-menu' role='menu'>
+
+                  <% story.tags.each do |tag| %>
+                    <li role='presentation'>
+                      <%= link_to tag.value, clean_page_path(story, 1, tag), role: 'menuitem' %>
+                    </li>
+                  <% end %>
+
+                </ul>
+              </li>
+
             <% end %>
           </ul>
           <% if @current_admin %>

@@ -7,8 +7,9 @@ class Story < ActiveRecord::Base
   validates_uniqueness_of :link
 
   # Only one story should be active at a time.
-  validates_uniqueness_of :active, if: :active
+# validates_uniqueness_of :active, if: :active
 
+  before_save :assure_active_unique
   after_create :create_first_page
 
   def self.active
@@ -30,12 +31,24 @@ class Story < ActiveRecord::Base
   end
 
   def tags(published = false)
-    (published ? published_pages : pages).tags
+    page_ids = self.page_ids
+    Tag
+      .joins(:pages)
+      .where(pages: { id: page_ids })
+      .uniq
   end
 
   private
 
   def create_first_page
     pages.create(number: 1, content: "Welcome to #{name}.")
+  end
+
+  def assure_active_unique
+    if active?
+      Story.where(active: true).update_all(active: false)
+    elsif Story.where(active: true).empty?
+      self.active = true
+    end
   end
 end

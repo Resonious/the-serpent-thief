@@ -1,8 +1,12 @@
 module StoriesHelper
   def clean_page_path(story, page_number, tag = nil)
     story = story.find_by(link: story) unless story.is_a?(Story)
+    tag = case tag
+          when Tag then tag.value
+          else tag
+          end
 
-    if story.active
+    if story.active?
       if tag
         read_story_page_path(tag, page_number)
       else

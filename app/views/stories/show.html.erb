@@ -49,7 +49,7 @@
 
       </div>
       <div class="col-sm-1">
-        <span class="page-number"><%= @page.number %></span>
+        <span id="the-page-number" class="page-number"><%= @page.number %></span>
         <%= link_to '(edit)', edit_page_path(@page), remote: true, id: 'edit-page-button' if admin_signed_in? %>
       </div>
     </div>
@@ -75,11 +75,10 @@
             <%= "(untouched)" if admin_signed_in? && !@blog_post_ready %>
             <i class="fa fa-chevron-down"></i>
           </a>
-          <!-- TODO Edit button for admin + generate blog post for posts on-create. -->
         </h2>
       </div>
       <div class="col-sm-1">
-        
+        <!-- padding :( -->
       </div>
     </div>
 

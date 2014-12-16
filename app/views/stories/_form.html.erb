@@ -13,6 +13,22 @@
       <%= f.text_field :link, :class => 'form-control' %>
     </div>
   </div>
+  <div class="form-group">
+    <%= f.label :active, :class => 'control-label' %>
+    <%= f.error_for :active %>
+    <div class="controls row">
+      <div class='col-sm-1'>
+        <%= f.check_box :active, :class => 'form-control' %>
+      </div>
+      <div id='active-warning' class='col-sm-6 content-box' <%= "data-already-active='#{@story.active?}'" if @story.active? %>>
+        Note: the previous active story will no longer be active.
+        Base page urls (<%= request.original_url.gsub '/stories', '' %>/&lt;pagenum&gt;)
+        are directed to the active story. Drastically changing or invalidating
+        content that appears on any given url may confuse search engine spiders.
+      </div>
+      <div class='col-sm-5'></div>
+    </div>
+  </div>
 
   
   <%= f.submit nil, :class => 'btn btn-primary' %>

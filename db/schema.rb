@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141213180924) do
+ActiveRecord::Schema.define(version: 20141216150727) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -47,10 +47,17 @@ ActiveRecord::Schema.define(version: 20141213180924) do
     t.boolean  "published"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "tag"
   end
 
+  add_index "pages", ["number"], name: "index_pages_on_number"
   add_index "pages", ["story_id"], name: "index_pages_on_story_id"
+
+  create_table "pages_tags", force: true do |t|
+    t.integer "page_id"
+    t.integer "tag_id"
+  end
+
+  add_index "pages_tags", ["page_id", "tag_id"], name: "index_pages_tags_on_page_id_and_tag_id"
 
   create_table "stories", force: true do |t|
     t.string   "name"
@@ -61,5 +68,11 @@ ActiveRecord::Schema.define(version: 20141213180924) do
   end
 
   add_index "stories", ["link"], name: "index_stories_on_link"
+
+  create_table "tags", force: true do |t|
+    t.string "value"
+  end
+
+  add_index "tags", ["value"], name: "index_tags_on_value", unique: true
 
 end
