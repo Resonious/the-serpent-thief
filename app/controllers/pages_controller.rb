@@ -26,6 +26,6 @@ class PagesController < InheritedResources::Base
   end
 
   def permitted_params
-    params.permit(:story_id, page: [:content, :published])
+    params.permit(:story_id, page: [:content, :published, :tag])
   end
 end

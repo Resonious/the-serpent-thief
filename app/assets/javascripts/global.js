@@ -5,6 +5,6 @@ function unsavedChangesToBlogPost() {
   return 'You have unsaved changes to the current blog post. Are you sure?';
 }
 
-function unsavedChangesToPage() {
+function unsavedChangesToPage(condition) {
   return 'You have unsaved changes to the current page. Are you sure?';
 }

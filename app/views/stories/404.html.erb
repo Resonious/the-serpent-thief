@@ -1,4 +1,8 @@
 <div class="page-header">
-  <h1>Oh no! There is no story for the link <%= link %>. Sorry!</h1>
+  <% if story.is_a?(Story) %>
+    <h1>Oh no! <%= story.name %> has no tag called <%= tag %>. Sorry!</h1>
+  <% else %>
+    <h1>Oh no! There is no story called <%= story or 'nil' %>. Sorry!</h1>
+  <% end %>
   <%= link_to "Story list", stories_path %>
 </div>

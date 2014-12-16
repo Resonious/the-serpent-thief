@@ -1,6 +1,6 @@
 <div class="page-header">
   <h1 class="content-title">
-    <%=t '.title', :default => @story.name %>
+    <%= t '.title', :default => @tag ? "#{@story.name} - #{@tag}" : @story.name %>
     <%= link_to '(new page)', new_story_page_path(@story), remote: true if admin_signed_in? %>
   </h1>
 
@@ -49,14 +49,15 @@
 
       </div>
       <div class="col-sm-1">
-        <span class="page-number"><%= @page.number %></span> <%= link_to '(edit)', edit_page_path(@page), remote: true, id: 'edit-page-button' if admin_signed_in? %>
+        <span class="page-number"><%= @page.number %></span>
+        <%= link_to '(edit)', edit_page_path(@page), remote: true, id: 'edit-page-button' if admin_signed_in? %>
       </div>
     </div>
 
     <div class="row">
-      <%= render partial: 'page_arrow', locals: { direction: 'left', page: @page.previous(!admin_signed_in?) } %>
+      <%= render 'page_arrow', direction: 'left', page: @page.previous(!admin_signed_in?) %>
       
-      <%= render partial: 'page_arrow', locals: { direction: 'right', page: @page.next(!admin_signed_in?) } %>
+      <%= render 'page_arrow', direction: 'right', page: @page.next(!admin_signed_in?) %>
 
       <div class="clearfix"></div>
     </div>

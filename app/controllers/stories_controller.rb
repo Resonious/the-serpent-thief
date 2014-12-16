@@ -1,4 +1,6 @@
 class StoriesController < InheritedResources::Base
+  include StoriesHelper
+
   before_filter :permitted_params
   before_filter :authenticate_admin!, except: [:show, :read, :index]
 
@@ -9,9 +11,14 @@ class StoriesController < InheritedResources::Base
   def show
     super do |format|
       format.html do
-        return redirect_to action: :read, story_link: @story.link
+        return redirect_to clean_page_path(@story, 1)
       end
     end
+  end
+
+  def home
+    # TODO remember position via cookies.
+    redirect_to read_page_path(1)
   end
 
   def read
@@ -19,35 +26,104 @@ class StoriesController < InheritedResources::Base
       return render text: "There aren't even any stories! What?!", status: 404
     end
 
-    if params[:story_link]
-      @story = Story.where(link: params[:story_link]).first
-
-      # puts Story.all.map(&:link)
-      # puts params[:story_link]
-
-      return render '404', status: 404, locals: {link: params[:story_link]} unless @story
-      @page = @story.pages.where(number: params[:page] || 1).first
-    else
-      if cookies[:page_id] && Page.where(id: cookies[:pate_id]).exists?
-        @page = Page.find cookies[:page_id]
-        @story = @page.story
-      else
-        @story = Story.where(active: true).first || Story.order("created_at DESC").first
-        @page = @story.first_page
-      end
+    story_or_tag = params[:story_or_tag]
+    page_number  = params[:page]
+    if page_number.nil?
+      return redirect_to read_story_page_path(story_or_tag, 1)
     end
 
+    if story_or_tag.nil?
+      @story = Story.active
+      @page  = @story.pages.find_by(number: page_number)
 
-    if @page.nil? || (!@page.published && !admin_signed_in?)
-      render 'no_such_page', locals: { page_number: params[:page] }
+    elsif Story.where(link: story_or_tag).exists?
+      @story = Story.find_by(link: story_or_tag)
+      return redirect_to read_page_path(page_number) if @story.active?
+      @page  = @story.pages.find_by(number: page_number)
+
     else
-      @blog_post_ready = @page.blog_post && @page.blog_post.content && !@page.blog_post.content.empty?
-      cookies[:page_id] = @page.id
-      render 'show'
+      @story = Story.active
+
+      return unless assign_tagged_page(tag, page_number)
     end
+
+    render 'show'
   end
 
+  def read_story_tag
+    unless Story.any?
+      return render text: "There aren't even any stories! What?!", status: 404
+    end
+
+    story = params[:story]
+    tag   = params[:tag]
+    page_number = params[:page]
+    if page_number.nil?
+      redirect_to read_story_tag_page_path(story, tag, 1)
+    end
+
+    @story = Story.find_by(link: story)
+
+    return unless assign_tagged_page(tag, page_number)
+
+    render 'show'
+  end
+
+  def assign_tagged_page(tag, page_number)
+    if @story.pages.tag?(tag)
+      @page = @story.pages.tagged_number(tag, page_number)
+      @tag  = tag
+      if @page.nil?
+        render 'no_such_page', locals: { page_number: params[:page] }
+        return false
+      end
+      # @page.scope_number_to_tag!
+    else
+      render_404(@story, tag)
+      return false
+    end
+    true
+  end
+
+  # Forget about all this
+  # def read(story_link)
+  #   if story_link
+  #     @story = case story_link
+  #       when String then Story.where(link: story_link).first
+  #       else story_link
+  #     end
+
+  #     # puts Story.all.map(&:link)
+  #     # puts params[:story_link]
+
+  #     @page = @story.pages.where(number: params[:page] || 1).first
+  #   else
+  #     if cookies[:page_id] && Page.where(id: cookies[:page_id]).exists?
+  #       @page = Page.find cookies[:page_id]
+  #       @story = @page.story
+  #     else
+  #       @story = Story.where(active: true).first || Story.order("created_at DESC").first
+  #       @page = @story.first_page
+  #     end
+  #   end
+
+  #   if @page.nil? || (!@page.published && !admin_signed_in?)
+  #     render 'no_such_page', locals: { page_number: params[:page] }
+  #   else
+  #     @blog_post_ready = @page.blog_post &&
+  #                        @page.blog_post.content &&
+  #                       !@page.blog_post.content.empty?
+  #     cookies[:page_id] = @page.id
+  #     render 'show'
+  #   end
+  # end
+
   private
+
+  def render_404(story, tag = nil)
+    return render '404', status: 404, locals: {story: story, tag: tag}
+  end
+
   def permitted_params
     params.permit(:story_link, :page, story: [:name, :link, :active])
   end

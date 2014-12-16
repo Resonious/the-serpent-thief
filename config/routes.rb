@@ -1,3 +1,7 @@
+numeric = lambda do |sym|
+  { sym => /\d+/ }
+end
+
 Rails.application.routes.draw do
   devise_for :admins, controllers: { registrations: 'admins/registrations' }
   get "/admin", to: redirect("/admins/sign_in")
@@ -7,7 +11,10 @@ Rails.application.routes.draw do
   end
   resources :blog_posts
   
-  root to: 'stories#read'
-  get "/:story_link", to: "stories#read", as: :read_story
-  get "/:story_link/:page", to: "stories#read", as: :read_story_page, constraints: { page: /\d+/ }
+  root to: 'stories#home'
+  get "/:page",               to: "stories#read", as: :read_page, constraints: numeric[:page]
+  get "/:story_or_tag",       to: "stories#read", as: :read_story
+  get "/:story_or_tag/:page", to: "stories#read", as: :read_story_page, constraints: numeric[:page]
+  get "/:story/:tag",         to: "stories#read_story_tag", as: :read_story_tag
+  get "/:story/:tag/:page",   to: "stories#read_story_tag", as: :read_story_tag_page, constraints: numeric[:page]
 end
