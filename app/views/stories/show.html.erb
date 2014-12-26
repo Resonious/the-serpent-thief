@@ -1,6 +1,12 @@
 <div class="page-header">
   <h1 class="content-title">
-    <%= t '.title', :default => @tag ? "#{@story.name} - #{@tag}" : @story.name %>
+    <% if @tag %>
+      <%= link_to @story.name, clean_page_path(@story, @page[:number]) %>
+      -
+      <%= @tag %>
+    <% else %>
+      <%= t '.title', :default => @tag ? "#{@story.name} - #{@tag}" : @story.name %>
+    <% end %>
     <%= link_to '(new page)', new_story_page_path(@story), remote: true if admin_signed_in? %>
   </h1>
 

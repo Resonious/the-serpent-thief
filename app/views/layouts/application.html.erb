@@ -72,7 +72,7 @@
                         <li role='presentation'>
                           <% if admin_signed_in? %> <div> <% end %>
 
-                            <%= link_to tag.value, clean_page_path(story, 1, tag), role: 'menuitem' %>
+                            <%= link_to tag.value, clean_story_path(story, tag), role: 'menuitem' %>
                             <% if admin_signed_in? %>
                               <% session[:return_to] = request.original_url %>
                               <%= link_to tag_path(tag), method: 'DELETE', style: 'float: right;', data: { confirm: "Destroy tag #{tag.value}? Pages will remain, but will no longer have this tag." } do %>
