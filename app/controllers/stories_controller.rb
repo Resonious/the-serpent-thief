@@ -18,7 +18,7 @@ class StoriesController < InheritedResources::Base
 
   def home
     # TODO remember position via cookies.
-    redirect_to read_page_path(1)
+    redirect_to read_page_path(load_cookie_for(nil))
   end
 
   def read
@@ -31,7 +31,11 @@ class StoriesController < InheritedResources::Base
     story_or_tag = params[:story_or_tag]
     page_number  = params[:page]
     if page_number.nil?
-      return redirect_to read_story_page_path(story_or_tag, 1)
+      return redirect_to read_story_page_path(
+        story_or_tag, load_cookie_for(story_or_tag)
+      )
+    else
+      store_cookie_for(story_or_tag, page_number)
     end
 
     if story_or_tag.nil?
@@ -60,9 +64,14 @@ class StoriesController < InheritedResources::Base
     story = params[:story]
     tag   = params[:tag]
     page_number = params[:page]
+    story_tag_identifier = "#{story}/#{tag}"
     if page_number.nil?
-      redirect_to read_story_tag_page_path(story, tag, 1)
+        redirect_to read_story_tag_page_path(story, tag,
+                                   load_cookie_for(story_tag_identifier)
+                                 )
       return
+    else
+      store_cookie_for(story_tag_identifier, page_number)
     end
 
     @story = Story.find_by(link: story)
@@ -73,6 +82,18 @@ class StoriesController < InheritedResources::Base
   end
 
   private
+
+  def store_cookie_for(story_or_tag, page_num)
+    story_or_tag = 'DEFAULT' if story_or_tag.nil?
+    cookies[story_or_tag] = page_num
+  end
+
+  def load_cookie_for(story_or_tag)
+    story_or_tag = 'DEFAULT' if story_or_tag.nil?
+    page_num = cookies[story_or_tag]
+    return page_num.to_i if page_num && page_num.to_i != 0
+    1
+  end
 
   def assign_tagged_page(tag, page_number)
     if @story.nil?
