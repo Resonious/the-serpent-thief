@@ -100,6 +100,12 @@ class Page < ActiveRecord::Base
     !@current_tag.nil?
   end
 
+  def blog_post_ready?
+    blog_post &&
+    blog_post.content &&
+    !blog_post.content.empty?
+  end
+
   private
 
   def page_relative_to(dir, published = true)
