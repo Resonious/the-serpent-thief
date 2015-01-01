@@ -1,0 +1,14 @@
+$('#page-content').html("<%=j @page.content.html_safe %>");
+$('#the-page-number').html("<%= @page.number %>");
+
+$('.left-arrow').html("<%=j render 'page_arrow', direction: 'left', page: @page.previous(!admin_signed_in?) %>");
+
+$('.right-arrow').html("<%=j render 'page_arrow', direction: 'right', page: @page.next(!admin_signed_in?) %>");
+
+$('#inspiration-container').html("<%=j render 'stories/inspiration' if @page.blog_post_ready? %>");
+
+if (history !== undefined) {
+  history.pushState(null, null, "<%=j request.original_url %>");
+}
+
+window.scrollTo(0, 0);

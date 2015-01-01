@@ -1,6 +1,6 @@
 <div class="<%= direction %>-arrow">
   <% if local_assigns[:page] %>
-    <%= link_to clean_page_path(page.story, page.number, @tag) do %>
+    <%= link_to clean_page_path(page.story, page.number, @tag), remote: !admin_signed_in? do %>
       <i class="fa fa-arrow-<%= direction %> fa-5x page-arrow"></i>
     <% end %>
   <% end %>

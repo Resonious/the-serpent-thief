@@ -86,11 +86,20 @@ class StoriesController < InheritedResources::Base
   def store_cookie_for(story_or_tag, page_num)
     story_or_tag = 'DEFAULT' if story_or_tag.nil?
     cookies[story_or_tag] = page_num
+
+    puts "**************************************************************"
+    puts "cookies[#{story_or_tag}] = #{page_num}"
+    puts "**************************************************************"
   end
 
   def load_cookie_for(story_or_tag)
     story_or_tag = 'DEFAULT' if story_or_tag.nil?
     page_num = cookies[story_or_tag]
+
+    puts "**************************************************************"
+    puts "loaded cookie page num #{page_num} from #{story_or_tag}"
+    puts "**************************************************************"
+
     return page_num.to_i if page_num && page_num.to_i != 0
     1
   end
