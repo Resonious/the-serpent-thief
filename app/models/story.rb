@@ -1,6 +1,6 @@
 class Story < ActiveRecord::Base
   has_many :pages, dependent: :destroy, inverse_of: :story
-  has_many :tags, -> { uniq }, through: :pages
+  has_many :tags, -> { uniq }, through: :pages, select: "stories.*, pages.number"
   validates_presence_of :name
   validates_uniqueness_of :name
 
