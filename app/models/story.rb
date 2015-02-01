@@ -1,5 +1,6 @@
 class Story < ActiveRecord::Base
   has_many :pages, dependent: :destroy, inverse_of: :story
+  has_many :tags, through: :pages
   validates_presence_of :name
   validates_uniqueness_of :name
 
@@ -28,14 +29,6 @@ class Story < ActiveRecord::Base
 
   def published_pages
     pages.where published: true
-  end
-
-  def tags(published = false)
-    page_ids = self.page_ids
-    Tag
-      .joins(:pages)
-      .where(pages: { id: page_ids })
-      .uniq
   end
 
   private
