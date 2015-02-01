@@ -10,7 +10,7 @@ class Page < ActiveRecord::Base
   before_validation :assure_page_number
   before_validation :assure_blog_post, on: :create
 
-  default_scope -> { order 'number ASC' }
+  default_scope -> { order 'pages.number ASC' }
 
   def self.published
     where(published: true)
