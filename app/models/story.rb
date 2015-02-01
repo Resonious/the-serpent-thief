@@ -23,6 +23,10 @@ class Story < ActiveRecord::Base
       .uniq
   end
 
+  def pages
+    super.order 'pages.number ASC'
+  end
+
   def first_page
     pages.where(number: 1).first or raise "#{name} has no first page!"
   end
