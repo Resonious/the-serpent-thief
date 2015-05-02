@@ -1,3 +1,5 @@
+require 'cgi'
+
 class Page < ActiveRecord::Base
   belongs_to :story, inverse_of: :pages
   has_one :blog_post
@@ -110,7 +112,8 @@ class Page < ActiveRecord::Base
     index = 0
     spaces = 0
     on_space = false
-    clean_content = HTML::FullSanitizer.new.sanitize(content)
+    clean_content = HTML::FullSanitizer.new
+      .sanitize(CGI.unescapeHTML(content))
 
     clean_content.each_char do |char|
       if /\s/ =~ char
