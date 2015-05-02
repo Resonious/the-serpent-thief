@@ -113,8 +113,10 @@ class Page < ActiveRecord::Base
     spaces = 0
     on_space = false
     clean_content = HTML::FullSanitizer.new
-      .sanitize(CGI.unescapeHTML(content))
-      .gsub(/(\&nbsp;)|(<\/p>)/, ' ')
+      .sanitize(
+        CGI.unescapeHTML(content)
+           .gsub(/(\&nbsp;)|(<\/p>)/, ' ')
+      )
 
     clean_content.split(/\s+/).take(5).join(' ')
     # clean_content.each_char do |char|
