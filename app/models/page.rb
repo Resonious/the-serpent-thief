@@ -1,5 +1,3 @@
-require 'cgi'
-
 class Page < ActiveRecord::Base
   belongs_to :story, inverse_of: :pages
   has_one :blog_post
@@ -112,9 +110,9 @@ class Page < ActiveRecord::Base
     index = 0
     spaces = 0
     on_space = false
-    HTML::FullSanitizer.new
-        .sanitize(CGI.unescapeHTML(content))
-        .each_char do |char|
+    clean_content = HTML::FullSanitizer.new.sanitize(content)
+
+    clean_content.each_char do |char|
       if /\s/ =~ char
         unless on_space
           spaces += 1
@@ -126,7 +124,7 @@ class Page < ActiveRecord::Base
       break if spaces >= 5 && !on_space
       index += 1
     end
-    content.byteslice(0, index).strip
+    clean_content.byteslice(0, index).strip
   end
 
   private
