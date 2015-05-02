@@ -118,7 +118,7 @@ class Page < ActiveRecord::Base
            .gsub(/(\&nbsp;)|(<\/p>)/, ' ')
       )
 
-    clean_content.split(/\s+/).take(5).join(' ')
+    clean_content.split(/\s+/).take(6).join(' ')
     # clean_content.each_char do |char|
     #   if /\s/ =~ char
     #     unless on_space
