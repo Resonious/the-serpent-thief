@@ -8,6 +8,7 @@
       <% else %>
         <%= t '.title', :default => @tag ? "#{@story.name} - #{@tag}" : @story.name %>
       <% end %>
+      <%= link_to '(edit)', edit_story_path(@story) if admin_signed_in? %>
       <%= link_to '(new page)', new_story_page_path(@story), remote: true if admin_signed_in? %>
     </h1>
     <% if @story.pages.size > 1 %>

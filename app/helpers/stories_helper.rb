@@ -43,12 +43,12 @@ module StoriesHelper
     end
   end
 
-  def clean_contents_path(story)
+  def clean_contents_path(story, *args)
     story = story.find_by(link: story) unless story.is_a?(Story)
     if story.active?
-      contents_path
+      contents_path(*args)
     else
-      story_contents_path(story.link)
+      story_contents_path(story.link, *args)
     end
   end
 end

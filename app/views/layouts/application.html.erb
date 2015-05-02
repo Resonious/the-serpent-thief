@@ -39,6 +39,10 @@
     <%= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
 
     <%= javascript_include_tag "application" %>
+
+    <% if @story %>
+      <%= auto_discovery_link_tag(:rss, clean_contents_path(@story, format: :rss)) %>
+    <% end %>
   </head>
   <body>
     <div class="navbar navbar-default navbar-static-top">
@@ -109,7 +113,7 @@
       <%= yield %>
       
       <footer>
-        <p>Banner by <%= link_to 'casebook art', 'http://thecasebookof.tumblr.com/' %>; Site by <%= link_to 'Resonious', 'https://github.com/Resonious' %></p>
+        <p>Banner by <%= link_to 'casebook art', 'http://thecasebookof.tumblr.com/' %>; Site by <%= link_to 'Resonious', 'https://github.com/Resonious' %><% if @story %>; <%= link_to clean_contents_path(@story, format: :rss) do %>rss <%= image_tag 'feed-icon-14x14.png', alt: 'rss feed' %><% end %><% end %></p>
       </footer>
 
     </div> <!-- /container -->

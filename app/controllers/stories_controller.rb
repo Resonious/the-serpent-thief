@@ -172,6 +172,6 @@ class StoriesController < InheritedResources::Base
   end
 
   def permitted_params
-    params.permit(:story_link, :page, story: [:name, :link, :active])
+    params.permit(:story_link, :page, story: [:name, :link, :active, :description])
   end
 end

@@ -21,6 +21,4 @@ Rails.application.routes.draw do
   get "/:story_or_tag/:page", to: "stories#read", as: :read_story_page, constraints: numeric[:page]
   get "/:story/:tag",         to: "stories#read_story_tag", as: :read_story_tag
   get "/:story/:tag/:page",   to: "stories#read_story_tag", as: :read_story_tag_page, constraints: numeric[:page]
-
-  # get "/rss", to: "pages#rss", as: :rss
 end
