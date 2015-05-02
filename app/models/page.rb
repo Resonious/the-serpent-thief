@@ -1,4 +1,4 @@
-require 'html/sanitizer'
+require 'cgi'
 
 class Page < ActiveRecord::Base
   belongs_to :story, inverse_of: :pages
@@ -112,7 +112,9 @@ class Page < ActiveRecord::Base
     index = 0
     spaces = 0
     on_space = false
-    HTML::FullSanitizer.new.sanitize(content.html_safe).each_char do |char|
+    HTML::FullSanitizer.new
+        .sanitize(CGI.unescapeHTML(content))
+        .each_char do |char|
       if /\s/ =~ char
         unless on_space
           spaces += 1
