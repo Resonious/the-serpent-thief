@@ -1,4 +1,6 @@
 class Page < ActiveRecord::Base
+  include ActionView::Helpers::SanitizeHelper
+
   belongs_to :story, inverse_of: :pages
   has_one :blog_post
   has_and_belongs_to_many :tags
@@ -110,7 +112,7 @@ class Page < ActiveRecord::Base
     index = 0
     spaces = 0
     on_space = false
-    content.each_char do |char|
+    strip_tags(content).each_char do |char|
       if /\s/ =~ char
         unless on_space
           spaces += 1
