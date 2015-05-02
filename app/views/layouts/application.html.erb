@@ -61,7 +61,7 @@
               <li>
                 <% has_tags = story.tags.any? %>
 
-                <%= link_to story.name, read_story_path(story.link), class: 'story-link' + (' tag-drop-hover' if has_tags).to_s %>
+                <%= link_to (story.active? ? 'Tags' : story.name), read_story_path(story.link), class: 'story-link' + (' tag-drop-hover' if has_tags).to_s %>
 
                 <% if has_tags %>
                   <div class='story-tags dropdown'>

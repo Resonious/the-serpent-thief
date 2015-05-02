@@ -1,0 +1,25 @@
+<div class="page-header">
+  <h1 class="content-title">
+    <%= @story.name %> Archive
+  </h1>
+
+  <div class="clearfix"></div>
+</div>
+
+<%= (admin_signed_in? ? @story.pages : @story.published_pages).find_each do |page| %>
+  <div class='row'>
+    <div class='col-sm-<%= admin_signed_in? ? 4 : 12 %>'>
+    <%= link_to "#{page.number}) #{page.first_5_words}...", clean_page_path(@story, page.number) %>
+    </div>
+    <% if admin_signed_in? %>
+      <div class='col-sm-8'>
+        <%= form_for page, remote: true, style: 'display: inline;' do |f| %>
+          <%= f.hidden_field(:published, id: "page-#{page.id}-pubfield", value: page.published? ? 0 : 1) %>
+          <%= link_to page.published? ? '(unpublish)' : '(publish)', '#', id: "page-#{page.id}-publink", onclick: '$(this).closest("form").submit();' %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<div style='margin-bottom: 50px;'>
+</div>

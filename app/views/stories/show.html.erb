@@ -1,14 +1,19 @@
 <div class="page-header">
-  <h1 class="content-title">
-    <% if @tag %>
-      <%= link_to @story.name, clean_page_path(@story, @page[:number]) %>
-      -
-      <%= @tag %>
-    <% else %>
-      <%= t '.title', :default => @tag ? "#{@story.name} - #{@tag}" : @story.name %>
+  <div class="content-title">
+    <h1>
+      <% if @tag %>
+        <%= link_to @story.name, clean_page_path(@story, @page[:number]) %>
+        -
+        <%= @tag %>
+      <% else %>
+        <%= t '.title', :default => @tag ? "#{@story.name} - #{@tag}" : @story.name %>
+      <% end %>
+      <%= link_to '(new page)', new_story_page_path(@story), remote: true if admin_signed_in? %>
+    </h1>
+    <% if @story.pages.size > 1 %>
+      <%= link_to 'archive', clean_contents_path(@story) %>
     <% end %>
-    <%= link_to '(new page)', new_story_page_path(@story), remote: true if admin_signed_in? %>
-  </h1>
+  </div>
 
   <% if admin_signed_in? %>
     <div class="content-box content-audio">

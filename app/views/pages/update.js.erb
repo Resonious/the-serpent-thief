@@ -1,4 +1,6 @@
-$('#edit-page-button').show()
+$('#edit-page-button').show();
 $('#page-content').html("<%=j @page.content.html_safe %>");
+$('#page-<%= @page.id %>-publink').text("<%= @page.published? ? '(unpublish)' : '(publish)' %>");
+$('#page-<%= @page.id %>-pubfield').val(<%= @page.published? ? 0 : 1 %>);
 
 $(window).off('beforeunload.page');

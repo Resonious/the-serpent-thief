@@ -42,4 +42,13 @@ module StoriesHelper
       end
     end
   end
+
+  def clean_contents_path(story)
+    story = story.find_by(link: story) unless story.is_a?(Story)
+    if story.active?
+      contents_path
+    else
+      story_contents_path(story.link)
+    end
+  end
 end

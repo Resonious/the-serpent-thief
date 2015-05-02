@@ -2,7 +2,7 @@ class StoriesController < InheritedResources::Base
   include StoriesHelper
 
   before_filter :permitted_params
-  before_filter :authenticate_admin!, except: [:home, :show, :read, :read_story_tag, :index]
+  before_filter :authenticate_admin!, except: [:home, :show, :read, :read_story_tag, :index, :contents]
 
   def index
     @stories = admin_signed_in? ? Story.all : Story.with_pages
@@ -19,6 +19,15 @@ class StoriesController < InheritedResources::Base
   def home
     # TODO remember position via cookies.
     redirect_to read_page_path(load_cookie_for(nil))
+  end
+
+  def contents
+    if params[:story]
+      @story = Story.where(link: params[:story]).first
+    else
+      @story = Story.active
+    end
+    render_404 and return if @story.nil?
   end
 
   def read
