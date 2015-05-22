@@ -44,7 +44,7 @@ class Page < ActiveRecord::Base
   end
 
   def tags=(tag_list)
-    new_tags      = tag_list.downcase.split(',')
+    new_tags      = tag_list.downcase.split(',').map(&:strip)
     existing_tags = tags.map(&:value)
 
     # If thing out the new tag list to only include tags we don't

@@ -1,5 +1,5 @@
 class Story < ActiveRecord::Base
-  has_many :pages, dependent: :destroy, inverse_of: :story
+  has_many :pages, -> { order('number ASC') }, dependent: :destroy, inverse_of: :story
   has_many :tags, -> { uniq }, through: :pages
   validates_presence_of :name
   validates_uniqueness_of :name
@@ -21,10 +21,6 @@ class Story < ActiveRecord::Base
     joins(:pages)
       .where(pages: { published: true })
       .uniq
-  end
-
-  def pages
-    super.order 'pages.number ASC'
   end
 
   def first_page
