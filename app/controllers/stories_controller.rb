@@ -21,6 +21,7 @@ class StoriesController < InheritedResources::Base
     redirect_to read_page_path(load_cookie_for(nil))
   end
 
+  # This is the "archive" (originally called it contents)
   def contents
     if params[:story]
       @story = Story.where(link: params[:story]).first
