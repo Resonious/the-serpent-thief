@@ -1,26 +1,35 @@
 <div class='row'>
-  <h2>
-    <% if @tag %>
-      <%= link_to clean_page_path(@story, @page[:number]), id: 'cancel-tag-btn' do %>
-        <i class='fa fa-times'></i>
-      <% end %>
-      <em><%= @tag %></em>
-    <% else %>
-    <% end %>
-    <%= link_to '(edit)', edit_story_path(@story) if admin_signed_in? %>
-    <%= link_to '(new page)', new_story_page_path(@story), remote: true if admin_signed_in? %>
-  </h2>
-  <% if @story.pages.size > 1 %>
-    <%= link_to 'archive', clean_contents_path(@story), class: 'btn btn-serpent' %>
-  <% end %>
-</div>
+  <div class='col-sm-2'></div>
 
-<div class="clearfix"></div>
+  <div class='col-sm-2'>
+    <% if @story.pages.size > 1 %>
+      <%= link_to 'archive', clean_contents_path(@story), class: 'btn btn-serpent' %>
+    <% end %>
+  </div>
+
+  <div class='col-sm-2'>
+    <h3 style='margin-top: 0;'>
+      <% if @tag %>
+        <%= link_to clean_page_path(@story, @page[:number]), id: 'cancel-tag-btn' do %>
+          <i class='fa fa-times'></i>
+        <% end %>
+        <em><%= @tag %></em>
+      <% end %>
+    </h3>
+  </div>
+
+  <div class='col-sm-2'>
+  </div>
+  <div class='col-sm-2'>
+    <%= link_to 'new page', new_story_page_path(@story), remote: true, class: 'btn btn-serpent' if admin_signed_in? %>
+  </div>
+  <div class='col-sm-2'></div>
+</div>
 
 <div class="row story-body">
   <div class="col-sm-2"></div>
 
-  <div class="col-sm-8 content-box content-left">
+  <div id="page-box" class="col-sm-8 content-box content-left">
     <div class="row">
       <div class="col-sm-11">
 

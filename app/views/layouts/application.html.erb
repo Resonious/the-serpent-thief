@@ -48,12 +48,15 @@
     <% if @current_admin %>
       <div class="navbar navbar-default navbar-static-top">
         <div class="container">
-          <div class="navbar-collapse collapse navbar-responsive-collapse">
-            <ul class="nav navbar-nav">
+          <div class="navbar-collapse row collapse navbar-responsive-collapse">
+            <div class='col-sm-4'>
               You are logged in as <%= @current_admin.email %>. <br />
               <%= link_to "Sign out", destroy_admin_session_path, method: 'DELETE' %> -
               <%= link_to "Account", edit_admin_registration_path %>
-            </ul>
+            </div>
+            <div class='col-sm-8'>
+              <%= link_to 'Configuration', stories_path, class: 'btn btn-serpent' %>
+            </div>
             <div class="clearfix"></div>
           </div>
         </div>
@@ -63,13 +66,18 @@
     <%= bootstrap_flash %>
 
     <div class="container">
-      <a href="<%= root_path %>">
-        <%= image_tag "the-serpent-thief.png", class: 'navbar-brand', style: 'width: 842px; height: 233px; z-index: -111!important;', alt: (ENV['SITE_NAME'] or 'PLZ SET SITE_NAME') %>
-      </a>
+      <div class='homepage-link logo'>
+        <a href="<%= root_path %>" class='logo'>
+          <%= image_tag "the-serpent-thief.png", data: { width: 842, height: 233 }, class: 'logo navbar-brand', style: 'z-index: -111!important;', alt: (ENV['SITE_NAME'] or 'PLZ SET SITE_NAME') %>
+        </a>
+      </div>
+
+      <div class='clearfix'></div>
 
       <%= yield %>
 
       <footer>
+        <p>Author: Robin Galliea</p>
         <p>Banner by <%= link_to 'casebook art', 'http://thecasebookof.tumblr.com/' %>; Site by <%= link_to 'Resonious', 'https://github.com/Resonious' %><% if @story %>; <%= link_to clean_contents_path(@story, format: :rss) do %>rss <%= image_tag 'feed-icon-14x14.png', alt: 'rss feed' %><% end if @story.try(:link) %><% end %></p>
       </footer>
 
