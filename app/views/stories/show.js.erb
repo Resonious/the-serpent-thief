@@ -7,6 +7,8 @@ $('.right-arrow').html("<%=j render 'page_arrow', direction: 'right', page: @pag
 
 $('#inspiration-container').html("<%=j render 'stories/inspiration' if @page.blog_post_ready? %>");
 
+$('#cancel-tag-btn').prop('href', "<%= clean_page_path(@story, @page[:number]) %>");
+
 if (history !== undefined) {
   history.pushState(null, null, "<%=j request.original_url %>");
 }
