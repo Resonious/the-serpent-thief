@@ -48,7 +48,7 @@
     <% if @current_admin %>
       <div class="navbar navbar-default navbar-static-top">
         <div class="container">
-          <div class="navbar-collapse row collapse navbar-responsive-collapse">
+          <div class="row">
             <div class='col-sm-4'>
               You are logged in as <%= @current_admin.email %>. <br />
               <%= link_to "Sign out", destroy_admin_session_path, method: 'DELETE' %> -
