@@ -22,5 +22,7 @@
 # Vim swp files
 **/*.swp
 
+.DS_Store
+
 serp-dev
 serp-test

@@ -1,6 +1,8 @@
 require 'cgi'
 
 class Page < ActiveRecord::Base
+  include Content
+
   belongs_to :story, inverse_of: :pages
   has_one :blog_post
   has_and_belongs_to_many :tags
@@ -44,8 +46,8 @@ class Page < ActiveRecord::Base
   end
 
   def tags=(tag_list)
-    new_tags      = tag_list.downcase.split(',').map(&:strip)
-    existing_tags = tags.map(&:value)
+    new_tags      = tag_list.map(&:strip).reject(&:blank?).map(&:downcase)
+    existing_tags = tags.pluck(:value)
 
     # If thing out the new tag list to only include tags we don't
     # already have. Additionally, remove any existing tags that
@@ -66,7 +68,7 @@ class Page < ActiveRecord::Base
   end
 
   def tag_values
-    tags.map(&:value).join(',')
+    tags.map(&:value)
   end
 
   def next(published = true)
@@ -111,7 +113,7 @@ class Page < ActiveRecord::Base
   def first_5_words
     clean_content = HTML::FullSanitizer.new
       .sanitize(
-        CGI.unescapeHTML(content)
+        CGI.unescapeHTML(rendered_content)
            .gsub(/(\&nbsp;)|(<\/p>)/, ' ')
       )
 

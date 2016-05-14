@@ -5,18 +5,34 @@
     </div>
     <div class='col-sm-11'>
       <%= f.error_for :tags %>
-      <%= f.text_field :tags, value: (page.new_record? ? (@story.pages - [page]).last.try(:tag_values) : page.tag_values) %>
+      <%= f.select :tags,
+        options_for_select(
+          @story.tags.pluck(:value),
+          (page.new_record? ? (@story.pages - [page]).last.try(:tag_values) : page.tag_values)
+        ),
+        {},
+        multiple: true
+      %>
     </div>
   </div/>
   <div class='form-group controls row markdown-container'>
-    <div class="col-sm-6">
-      <%= f.error_for :content %>
-      <%= f.text_area :content, rows: 10, cols: 50, class: 'markdown-input' %>
-    </div>
-    <div class="col-sm-6">
-      <div class='markdown-preview'>
+    <% if local_assigns[:preview] %>
+
+      <div class="col-sm-6">
+        <%= f.error_for :content %>
+        <%= f.text_area :content, rows: 15, class: 'markdown-input', oninput: "previewMarkdown.apply(this); setTextareaHeight.apply(this)" %>
       </div>
-    </div>
+
+      <div class="col-sm-6">
+        <div class='markdown-preview content-box'>
+          <%= page.rendered_content.try(:html_safe) %>
+        </div>
+      </div>
+
+    <% else %>
+      <%= f.error_for :content %>
+      <%= f.text_area :content, rows: 15 %>
+    <% end %>
   </div>
 
   <% unless local_assigns[:no_cancel] %>
@@ -24,3 +40,5 @@
   <% end %>
   <%= f.submit unless local_assigns[:no_submit] %>
 <% end %>
+
+<%= javascript_tag "$('#page_tags').select2({tags: true, width: '100%'})" %>

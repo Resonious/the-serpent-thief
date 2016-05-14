@@ -21,7 +21,7 @@
   <div class='col-sm-2'>
   </div>
   <div class='col-sm-2'>
-    <%= link_to 'new page', new_story_page_path(@story), remote: true, class: 'btn btn-serpent' if admin_signed_in? %>
+    <%= link_to 'new page', new_story_page_path(@story), remote: false, class: 'btn btn-serpent' if admin_signed_in? %>
   </div>
   <div class='col-sm-2'></div>
 </div>
@@ -58,7 +58,7 @@
         <% end %>
 
         <div id="page-content">
-          <%= @page.content %>
+          <%= @page.rendered_content.html_safe %>
         </div>
 
       </div>

@@ -36,6 +36,42 @@ function setLogoWidth() {
   }
 }
 
+function setTextareaHeight(){
+  this.style.height = this.scrollHeight+'px'; 
+}
+
+var markdownEditors = {};
+function previewMarkdown() {
+  if (markdownEditors[this.id] === undefined) {
+    var newEditor = {
+      input:   this,
+      preview: $(this).closest('.markdown-container').find('.markdown-preview')[0],
+      timeout: null
+    };
+    markdownEditors[this.id] = newEditor;
+  }
+
+  var editor = markdownEditors[this.id];
+
+  editor.timeout = setTimeout(function() {
+    editor.preview.innerHTML = markdown.toHTML(editor.input.value);
+  }, 10);
+}
+
+function inspirationChevronUp() {
+  var chev = $("#inspiration-hide");
+
+  chev.removeClass('fa-chevron-down');
+  chev.addClass('fa-chevron-up');
+}
+
+function inspirationChevronDown() {
+  var chev = $("#inspiration-hide");
+
+  chev.removeClass('fa-chevron-up');
+  chev.addClass('fa-chevron-down');
+}
+
 $(function() {
   $(window).resize(setLogoWidth);
   setLogoWidth();

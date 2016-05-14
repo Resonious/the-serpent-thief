@@ -1,4 +1,4 @@
 <div class="page-header">
-  <h1>Page <%= @story.pages.count+1 %> of <%= @story.name %></h1>
+  <h1>Creating page <%= @story.pages.count+1 %> of <%= @story.name %></h1>
 </div>
-<%= render partial: 'form', locals: { page: @page } %>
+<%= render 'form', page: @page, preview: true %>
