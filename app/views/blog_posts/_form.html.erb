@@ -1,7 +1,7 @@
 <%= form_for blog_post, remote: local_assigns[:remote], builder: BootstrapFormBuilder do |f| %>
   <div class='form-group controls'>
     <%= f.error_for :content %>
-    <%= f.text_area :content, class: 'summernote' %>
+    <%= f.text_area :content %>
   </div>
 
   <% unless local_assigns[:no_cancel] %>

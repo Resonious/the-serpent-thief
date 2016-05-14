@@ -21,3 +21,6 @@
 
 # Vim swp files
 **/*.swp
+
+serp-dev
+serp-test

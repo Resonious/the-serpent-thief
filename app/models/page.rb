@@ -109,9 +109,6 @@ class Page < ActiveRecord::Base
   end
 
   def first_5_words
-    index = 0
-    spaces = 0
-    on_space = false
     clean_content = HTML::FullSanitizer.new
       .sanitize(
         CGI.unescapeHTML(content)
@@ -119,19 +116,6 @@ class Page < ActiveRecord::Base
       )
 
     clean_content.split(/\s+/).take(6).join(' ')
-    # clean_content.each_char do |char|
-    #   if /\s/ =~ char
-    #     unless on_space
-    #       spaces += 1
-    #       on_space = true
-    #     end
-    #   else
-    #     on_space = false
-    #   end
-    #   break if spaces >= 5 && !on_space
-    #   index += 1
-    # end
-    # clean_content.byteslice(0, index).strip
   end
 
   private

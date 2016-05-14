@@ -1,16 +1,22 @@
 <%= form_for (page.new_record? ? [@story, page] : page ), remote: local_assigns[:remote], builder: BootstrapFormBuilder do |f| %>
   <div class='form-group controls row'>
     <div class='col-sm-1'>
-      <%= f.label :tag, 'Tag:' %>
+      <%= f.label :tags, 'Tag:' %>
     </div>
     <div class='col-sm-11'>
       <%= f.error_for :tags %>
       <%= f.text_field :tags, value: (page.new_record? ? (@story.pages - [page]).last.try(:tag_values) : page.tag_values) %>
     </div>
   </div/>
-  <div class='form-group controls'>
-    <%= f.error_for :content %>
-    <%= f.text_area :content, class: 'summernote' %>
+  <div class='form-group controls row markdown-container'>
+    <div class="col-sm-6">
+      <%= f.error_for :content %>
+      <%= f.text_area :content, rows: 10, cols: 50, class: 'markdown-input' %>
+    </div>
+    <div class="col-sm-6">
+      <div class='markdown-preview'>
+      </div>
+    </div>
   </div>
 
   <% unless local_assigns[:no_cancel] %>

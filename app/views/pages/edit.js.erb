@@ -4,6 +4,4 @@ var $pageContent = $('#page-content');
 // oldHtml = $pageContent.html();
 $pageContent.html("<%= (escape_javascript render partial: 'form', locals: { page: @page, remote: true }) %>");
 
-initializeSummernote("#page_content");
-
 // $(window).on('beforeunload.page', unsavedChangesToPage);

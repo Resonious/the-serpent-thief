@@ -47,8 +47,6 @@ gem 'simple_form'
 gem 'bootstrap-sass'
 gem 'font-awesome-sass'
 
-gem 'summernote-rails'
-
 group :development, :test do
   gem 'sqlite3'
   gem 'rspec-rails', '~> 3.0.0'

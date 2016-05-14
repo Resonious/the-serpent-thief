@@ -58,7 +58,7 @@
         <% end %>
 
         <div id="page-content">
-          <%= @page.content.html_safe %>
+          <%= @page.content %>
         </div>
 
       </div>
@@ -84,10 +84,6 @@
 
   <div id="inspiration-container">
     <%= render 'stories/inspiration' if admin_signed_in? || @page.blog_post_ready? %>
-  </div>
-
-  <div id="twitter-box" class="col-lg-3 content-box">
-    <%= render 'stories/twitter_box' %>
   </div>
 
 </div>

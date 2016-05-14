@@ -20,6 +20,7 @@
           <%= link_to page.published? ? '(unpublish)' : '(publish)', '#', id: "page-#{page.id}-publink", onclick: '$(this).closest("form").submit(); return false;' %>
         <% end %>
       <% end %>
+
       <% page.tags.each_with_index do |tag, i| %>
         <%= link_to tag.value, clean_story_path(@story, tag) %><% if i != page.tags.size %>,<% end %>
       <% end %>
