@@ -63,6 +63,11 @@ class StoriesController < InheritedResources::Base
       return unless assign_tagged_page(story_or_tag, page_number)
     end
 
+    if @page.nil?
+      render 'no_such_page', locals: { page_number: page_number }
+      return
+    end
+
     render 'show'
   end
 

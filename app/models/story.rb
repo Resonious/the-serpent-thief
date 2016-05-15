@@ -1,6 +1,7 @@
 class Story < ActiveRecord::Base
-  has_many :pages, -> { order('number ASC') }, dependent: :destroy, inverse_of: :story
-  has_many :tags, -> { uniq }, through: :pages
+  has_many :pages, -> { order('"pages"."number" ASC') }, dependent: :destroy, inverse_of: :story
+  has_many :unordered_pages, class_name: "Page"
+  has_many :tags, -> { uniq }, through: :unordered_pages
   validates_presence_of :name
   validates_uniqueness_of :name
 

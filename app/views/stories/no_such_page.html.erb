@@ -3,7 +3,7 @@
     <h1>
       Unfortunately, the story "<%= @story.name %>" has no pages right now.
       <% if admin_signed_in? %>
-        <%= link_to 'Add one!', new_story_page_path(@story), remote: true %>
+        <%= link_to 'Add one!', new_story_page_path(@story) %>
       <% end %>
     </h1>
   <% else %>
