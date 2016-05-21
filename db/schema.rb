@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160514162452) do
+ActiveRecord::Schema.define(version: 20160519014027) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -77,5 +77,13 @@ ActiveRecord::Schema.define(version: 20160514162452) do
   end
 
   add_index "tags", ["value"], name: "index_tags_on_value", unique: true
+
+  create_table "webpages", force: true do |t|
+    t.text    "content"
+    t.text    "rendered_content"
+    t.string  "path"
+    t.string  "name"
+    t.boolean "show_link"
+  end
 
 end

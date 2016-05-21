@@ -1,0 +1,51 @@
+<%= form_for @webpage, html: { class: 'form-horizontal' }, builder: BootstrapFormBuilder do |f| %>
+  <div class='form-group'>
+    <%= f.label :name, class: 'control-label' %>
+    <div class='help-block'>
+      The text that appears on the link to this page
+    </div>
+    <%= f.error_for :name %>
+    <div class="controls">
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class='form-group'>
+    <%= f.label :show_link, class: 'control-label' %>
+    <div class='help-block'>
+      Display a link to this webpage in the navigation area?
+    </div>
+    <%= f.error_for :show_link %>
+    <div class='controls col-sm-2'>
+      <%= f.check_box :show_link, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class='form-group path-container'>
+    <%= f.label :path, class: 'control-label' %>
+    <div class='help-block path-preview' data-root-url="<%= root_url %>">
+      <%= root_url[0..-1] %><%= f.object.path %>
+    </div>
+    <%= f.error_for :path %>
+    <div class="controls">
+      <%= f.text_field :path, class: 'form-control path-input', oninput: "updatePathPreview.apply(this)" %>
+    </div>
+  </div>
+
+  <div class='markdown-container row'>
+    <%= f.label :content %>
+
+    <div class='col-sm-12 content-box markdown-preview'>
+      <%= @webpage.rendered_content.try(:html_safe) %>
+    </div>
+
+    <div class='col-sm-12'>
+      <%= f.error_for :content %>
+      <%= f.text_area :content, rows: 15, class: 'markdown-input', oninput: "previewMarkdown.apply(this); setTextareaHeight.apply(this)" %>
+    </div>
+  </div>
+
+  <div class='form-group'>
+    <%= f.submit %>
+  </div>
+<% end %>

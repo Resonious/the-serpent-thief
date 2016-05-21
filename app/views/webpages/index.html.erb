@@ -1,0 +1,22 @@
+<div class="page-header row">
+  <div class="col-sm-2">
+    <h1><%=t '.title', default: "Webpages" %></h1>
+  </div>
+  <div class="col-sm-1">
+    <% if @current_admin %>
+      <%= link_to "New webpage", new_webpage_path, class: 'btn btn-default' %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-7">
+    <ul>
+      <% @webpages.find_each do |webpage| %>
+        <li>
+          <i class="fa fa-gear"></i> <%= link_to "Edit", edit_webpage_path(webpage) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

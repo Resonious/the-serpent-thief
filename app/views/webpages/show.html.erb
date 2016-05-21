@@ -1,0 +1,25 @@
+<div clsas='row'>
+  <% Webpage.with_links.each do |webpage| %>
+    <% next if webpage.id == @webpage.id %>
+
+    <div class='col-sm-2'>
+      <%= link_to webpage.name, webpage.path, class: 'btn btn-serpent' %>
+    </div>
+  <% end %>
+
+  <% if @current_admin %>
+    <div class='col-sm-2'>
+      <%= link_to "Edit this webpage", edit_webpage_path(@webpage), class: 'btn btn-serpent' %>
+    </div>
+
+    <div class='col-sm-2'>
+      <%= link_to "Delete this webpage", webpage_path(@webpage), class: 'btn btn-danger', method: :delete, data: { confirm: "Delete webpage ##{@webpage.id} \"#{@webpage.name}\"?" } %>
+    </div>
+  <% end %>
+</div>
+
+<div class='row'>
+  <div class='col-sm-12 content-box'>
+    <%= @webpage.rendered_content.html_safe %>
+  </div>
+</div>

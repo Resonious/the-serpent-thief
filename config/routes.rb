@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     resources :pages, shallow: true
   end
   resources :tags, only: [:index, :destroy]
-  resources :blog_posts
+  resources :blog_posts, :webpages
+
+  get "/*webpage_path", to: "webpages#show", constraints: -> request { Webpage.check(request.path) }
 
   get ":story/archive", to: "stories#contents", as: :story_contents
   get "/archive", to: "stories#contents", as: :contents

@@ -6,6 +6,7 @@ class StoriesController < InheritedResources::Base
 
   def index
     @stories = admin_signed_in? ? Story.all : Story.with_pages
+    @webpages = Webpage.all
   end
 
   def show
@@ -102,18 +103,18 @@ class StoriesController < InheritedResources::Base
     story_or_tag = 'DEFAULT' if story_or_tag.nil?
     cookies[story_or_tag] = page_num
 
-    puts "**************************************************************"
-    puts "cookies[#{story_or_tag}] = #{page_num}"
-    puts "**************************************************************"
+    logger.info "**************************************************************"
+    logger.info "cookies[#{story_or_tag}] = #{page_num}"
+    logger.info "**************************************************************"
   end
 
   def load_cookie_for(story_or_tag)
     story_or_tag = 'DEFAULT' if story_or_tag.nil?
     page_num = cookies[story_or_tag]
 
-    puts "**************************************************************"
-    puts "loaded cookie page num #{page_num} from #{story_or_tag}"
-    puts "**************************************************************"
+    logger.info "**************************************************************"
+    logger.info "loaded cookie page num #{page_num} from #{story_or_tag}"
+    logger.info "**************************************************************"
 
     return page_num.to_i if page_num && page_num.to_i != 0
     1

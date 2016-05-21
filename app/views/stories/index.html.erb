@@ -1,16 +1,16 @@
-<div class="page-header row">
-  <div class="col-sm-2">
-    <h1><%=t '.title', :default => Story.model_name.human.pluralize.titleize %></h1>
-  </div>
-  <div class="col-sm-1">
-    <% if @current_admin %>
-      <%= link_to "New story", new_story_path, class: 'btn btn-default' %>
-    <% end %>
-  </div>
-</div>
-
 <div class="row">
-  <div class="col-sm-7">
+  <div class="col-sm-6">
+    <div class="page-header row">
+      <div class="col-sm-3">
+        <h1><%=t '.title', :default => Story.model_name.human.pluralize.titleize %></h1>
+      </div>
+      <div class="col-sm-1">
+        <% if @current_admin %>
+          <%= link_to "New story", new_story_path, class: 'btn btn-default' %>
+        <% end %>
+      </div>
+    </div>
+
     <ul>
       <% @stories.find_each do |story| %>
         <li>
@@ -19,9 +19,33 @@
         <% else %>
           <%= story.name %>
         <% end %>
+
         <% if @current_admin %>
           <i class="fa fa-gear"></i> <%= link_to "Manage", edit_story_path(story) %>
         <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="col-sm-6">
+    <div class="page-header row">
+      <div class="col-sm-4">
+        <h1><%=t '.title', default: "Webpages" %></h1>
+      </div>
+      <div class="col-sm-1">
+        <% if @current_admin %>
+          <%= link_to "New webpage", new_webpage_path, class: 'btn btn-default' %>
+        <% end %>
+      </div>
+    </div>
+
+    <ul>
+      <% @webpages.find_each do |webpage| %>
+        <li>
+          <%= link_to webpage.name, webpage.path %>
+
+          <i class="fa fa-gear"></i> <%= link_to "Edit", edit_webpage_path(webpage) %>
         </li>
       <% end %>
     </ul>

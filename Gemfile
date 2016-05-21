@@ -47,6 +47,7 @@ gem 'simple_form'
 gem 'bootstrap-sass'
 gem 'font-awesome-sass'
 gem 'redcarpet'
+gem 'thread_safe'
 
 group :development, :test do
   gem 'sqlite3'

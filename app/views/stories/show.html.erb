@@ -7,6 +7,12 @@
     <% end %>
   </div>
 
+  <% Webpage.with_links.each do |webpage| %>
+    <div class='col-sm-2'>
+      <%= link_to webpage.name, webpage.path, class: 'btn btn-serpent' %>
+    </div>
+  <% end %>
+
   <div class='col-sm-2'>
     <h3 style='margin-top: 0;'>
       <% if @tag %>
