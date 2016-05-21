@@ -1,17 +1,6 @@
 <div class='row'>
-  <div class='col-sm-2'></div>
-
-  <div class='col-sm-2'>
-    <% if @story.pages.size > 1 %>
-      <%= link_to 'archive', clean_contents_path(@story), class: 'btn btn-serpent' %>
-    <% end %>
+  <div class='col-sm-4'>
   </div>
-
-  <% Webpage.with_links.each do |webpage| %>
-    <div class='col-sm-2'>
-      <%= link_to webpage.name, webpage.path, class: 'btn btn-serpent' %>
-    </div>
-  <% end %>
 
   <div class='col-sm-2'>
     <h3 style='margin-top: 0;'>
@@ -25,11 +14,10 @@
   </div>
 
   <div class='col-sm-2'>
+    <% if admin_signed_in? %>
+      <%= link_to 'new page', new_story_page_path(@story), remote: false, class: 'btn btn-serpent' %>
+    <% end %>
   </div>
-  <div class='col-sm-2'>
-    <%= link_to 'new page', new_story_page_path(@story), remote: false, class: 'btn btn-serpent' if admin_signed_in? %>
-  </div>
-  <div class='col-sm-2'></div>
 </div>
 
 <div class="row story-body">

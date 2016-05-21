@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= ENV['SITE_TITLE'] or 'PLZ SET SITE_TITLE' %></title>
+    <title><%= site_title = Story.active.try(:name) || "..." %></title>
     <%= csrf_meta_tags %>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -45,30 +45,55 @@
     <% end %>
   </head>
   <body>
-    <% if @current_admin %>
-      <div class="navbar navbar-default navbar-static-top">
-        <div class="container">
-          <div class="row">
-            <div class='col-sm-4'>
-              You are logged in as <%= @current_admin.email %>. <br />
-              <%= link_to "Sign out", destroy_admin_session_path, method: 'DELETE' %> -
-              <%= link_to "Account", edit_admin_registration_path %>
-            </div>
-            <div class='col-sm-8'>
-              <%= link_to 'Configuration', stories_path, class: 'btn btn-serpent' %>
-            </div>
-            <div class="clearfix"></div>
-          </div>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="collapse navbar-collapse">
+        <div class='navbar-header'>
+          <% if @current_admin %>
+            You are logged in as <%= @current_admin.email %>. <br />
+            <%= link_to "Sign out", destroy_admin_session_path, method: :delete %> -
+            <%= link_to "Account", edit_admin_registration_path %>
+          <% end %>
         </div>
+
+        <ul class="nav navbar-nav">
+          <% if @current_admin %>
+            <li>
+              <%= link_to stories_path do %>
+                <i class="fa fa-gear"></i>
+                Configuration
+              <% end %>
+            </li>
+          <% end %>
+
+          <% Story.with_pages.each do |story| %>
+            <li class="<%= 'active' if story == @story %> dropdown">
+              <%= link_to story.name, clean_story_path(story), style: 'float: left;' %>
+              <%= link_to "##{story.name}-archive", class: 'dropdown-toggle', style: 'float: left;', data: { toggle: 'dropdown' } do %>
+                <span class='caret'></span>
+              <% end %>
+
+              <ul class='dropdown-menu'>
+                <li><%= link_to 'Archive', clean_contents_path(story) %></li>
+              </ul>
+            </li>
+          <% end %>
+
+          <% Webpage.with_links.each do |webpage| %>
+            <li class="<%= 'active' if webpage == @webpage %>">
+              <%= link_to webpage.name, webpage.path %>
+            </li>
+          <% end %>
+        </ul>
+        <div class="clearfix"></div>
       </div>
-    <% end %>
+    </nav>
 
     <%= bootstrap_flash %>
 
     <div class="container">
       <div class='homepage-link logo'>
         <a href="<%= root_path %>" class='logo'>
-          <%= image_tag "the-serpent-thief.png", data: { width: 842, height: 233 }, class: 'logo navbar-brand', style: 'z-index: -111!important;', alt: (ENV['SITE_NAME'] or 'PLZ SET SITE_NAME') %>
+          <%= image_tag "the-serpent-thief.png", data: { width: 842, height: 233 }, class: 'logo navbar-brand', style: 'z-index: -111!important;', alt: site_title %>
         </a>
       </div>
 
