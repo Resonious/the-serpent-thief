@@ -46,7 +46,7 @@
   </head>
   <body>
     <nav class="navbar navbar-default navbar-static-top">
-      <div class="collapse navbar-collapse">
+      <div class="navbar-inner">
         <div class='navbar-header'>
           <% if @current_admin %>
             You are logged in as <%= @current_admin.email %>. <br />
@@ -57,7 +57,7 @@
 
         <ul class="nav navbar-nav">
           <% if @current_admin %>
-            <li>
+            <li class="<%= 'active' if @stories && @webpages %>">
               <%= link_to stories_path do %>
                 <i class="fa fa-gear"></i>
                 Configuration
@@ -71,6 +71,7 @@
               <%= link_to "##{story.name}-archive", class: 'dropdown-toggle', style: 'float: left;', data: { toggle: 'dropdown' } do %>
                 <span class='caret'></span>
               <% end %>
+              <span class='clearfix'></span>
 
               <ul class='dropdown-menu'>
                 <li><%= link_to 'Archive', clean_contents_path(story) %></li>
