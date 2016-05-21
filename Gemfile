@@ -37,6 +37,8 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem "passenger", ">= 5.0.25", require: "phusion_passenger/rack_handler"
+
 gem 'inherited_resources'
 gem 'twitter-bootstrap-rails', git: 'https://github.com/seyhunak/twitter-bootstrap-rails', branch: 'bootstrap3'
 gem 'devise'
